@@ -1,0 +1,74 @@
+git commands:
+=============
+git init
+
+touch abc.txt
+
+git add .
+git ls-files---->the files which are present inthe staging area  
+
+git commit -m "add file"
+
+git commit -a -m "addfile"--->add and commit by single command
+
+git log
+
+git config
+
+Requirement-1:to see the difference in file content between working area and staging area we can use 'git diff'
+
+git diff file 
+
+git rm --cached file
+
+git ls-files---->it will show which files added into staging area
+
+git checkout command --->to discord unstaged changes in the tracked files.
+                      it will works for only tracked files
+
+git checkout -- file.txt
+
+git reset:
+-----------
+1.to remove the changes from staging area--->move staging area to workingdirectory
+2.to undo commits at the repository level
+
+1)git init 
+  touch abc.txt
+  git add .
+  git reset abc.txt
+
+2)git reset --mixed commitid --> it is default formate
+
+git reset --mixed commitid -->to remove the file from staging area and local repository also.it will not change the working direcory
+
+
+ vim file1.txt
+   animals
+vim file2.txt
+  lions
+vim file3.txt
+  tigers
+
+ git add file1 ; git commit -m "hi"
+ git add file2 ; git commit -m "hi"
+ git add file3 ; git commit -m "hi"
+ git log
+ git ls-files
+ git log --oneline
+8567902 (HEAD -> master) commit-1
+cf7ab3d commit-2
+65a7ed3 commit-3
+
+ git reset cf7ab3d
+ git ls-files
+ git log
+
+git reset command is works in two levels
+1. move staging area to workingdirectory
+2.undo changes in local repository level and staging area ,file moved from loca repo to working directory.
+
+git pull= git fetch+git merge 
+
+
+

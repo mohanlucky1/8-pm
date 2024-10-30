@@ -1,0 +1,176 @@
+git commands:
+-------------
+git init
+git add .
+git commit -m "message"
+git push -u origin main
+
+
+git commit -a -m "addfile"--->add and commit by single command
+git log----->to see the commit history or list of commits
+we need to give user name because ,GitHub recognize to which developer upload the code for that prepose we need to give user name,mail id.
+ 
+git config --global user.name ramu
+git config --global user.mail ramu@gmail.com
+
+Requirement-1:to see the difference in file content between working area and staging area we can use 'git diff'
+
+# git diff file 
+
+# git rm --cached file
+
+# git ls-files---->it will show which files added into staging area
+
+# git ls-files
+
+# git log --oneline
+
+---------------------------
+to up load file from local laptop to GitHub
+
+echo "this is rammohan" >> file1
+git init
+git add file1
+git commit -m "this is my first commit"
+git branch -m main
+git remote add origin <repository-url>
+git push -u origin main
+
+we need to give the user name of GitHub and password or token 
+--------------------------------------------------------------------
+difference between git clone and git pull:
+
+	if you want the entire repository in your GitHub  git clone we need to use, it is single time task.
+any developer upload code to GitHub. What the code he upload to GitHub we need to download to our local repo. Other wise we unable to upload our content to GitHub. To down load the small amount of change done by the other developer in GitHub we need to use the git pull command.
+
+git clone <Github-url>---> to download the entire repository 
+git pull----------------->to download the particular change.
+git log ----------------->we can see the commit history.
+
+git branch:
+-----------
+ a branch is a pointer to a specific commit in the repository's history. Branches are used to create independent lines of development, allowing you to work on different features, bug fixes, or experiments in parallel without affecting the main codebase.
+
+git branch -------------->we can see the list of branches.
+git checkout branch name-->to switch one branch to another branch.
+git branch branch-name ---->to create the branch
+git branch -b branch-name ---->to create the branch and switch to newly created branch.
+
+
+commit id: commit id is nothing but 40 characters unique id, "commit" is used for record the changes.
+==================================================================================================================
+git reset,git revert,git rebase:
+--------------------------------
+git reset:Hard Reset (git reset --hard <commit>): Moves the HEAD to the specified commit, and discards all changes in the working directory and staging area. Use this with caution as it permanently deletes changes
+
+git reset is used to undo changes in your working directory and staging area, or to move the HEAD pointer to a different commit without affecting the working directory or staging area.
+
+1.Soft Reset : Moves the HEAD to a specified commit, but leaves the working directory and the staging area unchanged. The changes from the commits that were "undone" are still staged.
+	
+	git reset --soft <commit>
+
+2.Mixed Reset : This is the default mode. It moves the HEAD to the specified commit and unstages all changes from the commits that were undone, but the changes remain in the working directory.
+
+	git reset --mixed <commit>
+
+3.Hard Reset : Moves the HEAD to the specified commit, and discards all changes in the working directory and staging area. Use this with caution as it permanently deletes changes.
+	
+	git reset --hard <commit>
+example:     
+
+# Suppose you have the following commit history:
+# A -- B -- C -- D (HEAD)
+# And you want to reset to commit B.
+
+git reset --hard B
+# Result:
+# A -- B (HEAD)
+# Commits C and D are discarded.
+
+git reset: Ideal for local undo operations before pushing changes, especially when you want to adjust the staging area or discard local changes.
+
+
+git revert:
+-----------
+git revert is used to create a new commit that undoes the changes made by a previous commit. Unlike git reset, git revert is safe because it doesn't modify the commit history—it adds a new commit that effectively cancels out a previous one.
+
+Example:
+bash
+Copy code
+# Suppose your commit history looks like this:
+# A -- B -- C -- D (HEAD)
+# And you want to undo the changes made in commit C.
+
+git revert C
+# Result:
+# A -- B -- C -- D -- E (HEAD)
+# Commit E contains the inverse of the changes introduced in C.
+
+git revert: Best used for undoing changes in a shared history without altering commit history, which is crucial in collaborative environments.
+
+git rebase:
+-----------
+git rebase is used to move or combine a sequence of commits to a new base commit. It is often used to "replay" commits from one branch onto another, or to clean up commit history by squashing commits.
+
+Example: Rebase onto another branch
+bash
+Copy code
+# Suppose your commit history looks like this:
+# main:    A -- B -- C
+# feature:      D -- E -- F (HEAD)
+
+# And you want to rebase the feature branch onto main.
+
+git checkout feature
+git rebase main
+# Result:
+# main:    A -- B -- C
+# feature:           D' -- E' -- F' (HEAD)
+# The feature branch now starts from commit C.
+
+git rebase: Useful for cleaning up commit history, integrating changes from different branches in a linear sequence, or resolving conflicts before merging.
+
+==========================================================================================================================================================
+git stash:
+
+
+The git stash command is used to temporarily save (or "stash") changes in your working directory that you are not yet ready to commit.
+	This allows you to switch branches or perform other Git operations without losing your uncommitted changes. Later, you can retrieve (or "apply") the stashed changes and continue working on them.
+
+Key Concepts:
+Stashing: Temporarily saves your modifications and clears your working directory.
+Applying: Retrieves the stashed changes and reapplies them to your working directory.
+Dropping: Removes a stash from the list of stashed changes.
+
+Basic Commands:
+
+Stash Changes:
+
+ # git stash
+
+List Stashes:
+
+ # git stash list
+
+Apply Stash: 
+
+ # git stash apply [stash@{index}]
+
+Drop Stash:
+ 
+ # git stash drop [stash@{index}]
+
+Pop Stash (Apply and Drop):
+
+ # git stash pop
+
+Stash with Message:
+ 
+# git stash save "message"
+====================================================================================================================================
+git merge:
+---------
+
+	git merge command is used to combine the changes from one branch into another. It integrates the changes from a specified branch into the current branch, creating a new commit that contains the merged content.
+
+# git merge <branch-name>
