@@ -1,0 +1,12 @@
+
+The uname command in Linux is used to display system information. It provides details about the operating system, kernel version, and hardware architecture. Here are some common options used with uname:
+
+uname (without options): Displays the kernel name (e.g., "Linux").
+uname -a: Displays all available system information, including the kernel name, network node hostname, kernel release, kernel version, machine hardware name, processor type, hardware platform, and operating system.
+uname -r: Displays the kernel release version.
+uname -s: Displays the kernel name.
+uname -n: Displays the network node hostname (the system's hostname).
+uname -m: Displays the machine hardware name (e.g., x86_64).
+uname -v: Displays the kernel version.
+uname -p: Displays the processor type (if available).
+uname -o: Displays the operating system name (if available).

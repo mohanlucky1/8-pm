@@ -1,0 +1,6 @@
+Linux architecture is the structure and organization of the components that make up the Linux operating system. Understanding Linux architecture helps in grasping how the system functions, manages resources, and interacts with hardware. Here's a brief overview of the key components.
+1. Kernel
+Core Component: The Linux kernel is the core of the operating system, managing hardware resources and providing an interface between the hardware and software.
+2. Shell
+Command Interpreter: The shell is the command-line interface that interprets and executes user commands. It can also run scripts for automating tasks.
+Examples: Common shells include Bash, Zsh, and Sh.

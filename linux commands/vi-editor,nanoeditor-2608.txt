@@ -1,0 +1,134 @@
+Modes in vim
+Normal Mode: This is the default mode when you open vi. In this mode, you can navigate through the text, delete characters or words, and perform other editing commands.
+Insert Mode: This is the mode where you can actually type text. You switch to Insert Mode from Normal Mode by pressing i, a, or o.
+i: Inserts text before the cursor.
+a: Inserts text after the cursor.
+o: Opens a new line below the current line and inserts text there.
+Command-Line Mode: You access this mode by pressing : in Normal Mode. In this mode, you can save your work, exit the editor, search for text, and execute other commands.
+2. Basic Commands
+Opening vi: To open a file in vi, type vi filename in the terminal.
+Saving and Exiting:
+:w : Save the current file.
+:q : Quit the editor.
+:wq or ZZ : Save the file and quit.
+:q! : Quit without saving changes.
+Navigating:
+h, j, k, l: Move the cursor left, down, up, and right, respectively.
+I---->for start of the line along with insert mode
+A---->for end of the line along with insert mode
+
+Editing:
+x: Delete the character under the cursor.
+dd: Delete the entire current line.
+u: Undo the last action.
+yy: copy the entire line.
+p: Paste the last deleted or copied text.
+Search:
+:/text: Search forward for "text".
+3. Advanced Features
+4. Exiting and Saving
+To exit vi:
+Save and quit: :wq or ZZ.
+Quit without saving: :q!.
+Save without quitting: :w.
+5. Tips for New Users
+vi is case-sensitive, so make sure you use the correct case for commands.
+Practice using the editor in a non-critical file until you’re comfortable with the commands.
+Remember that vi is very keyboard-oriented, so using shortcuts and commands efficiently can greatly speed up your editing process.
+vi might feel daunting at first, but once you get the hang of it, it becomes a very powerful tool for text editing.
+
+You said:
+
+Replace the first occurrence of a word in the entire file:
+Use the command: :%s/old_word/new_word/
+This will replace the first occurrence of old_word with new_word in each line of the file.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+nano editor:
+ 1.Basic Navigation
+Arrow Keys: You can use the arrow keys to move the cursor around in the text.
+Page Up / Page Down: Scroll up or down a page at a time.
+Ctrl + _ (underscore): Move to a specific line and column. You'll be prompted to enter the line and column number.
+2. Basic Editing
+Typing: Just start typing to insert text at the cursor position.
+Backspace: Deletes the character before the cursor.
+Ctrl + K: Cuts the entire current line and stores it in the clipboard (similar to "cut" in other editors).
+Ctrl + U: Pastes the last cut text at the current cursor position.
+3.Replacing Text
+Ctrl + \ (Backslash): Opens the search and replace prompt.
+Step 1: After pressing Ctrl + \, type the text you want to find and press Enter.
+Step 2: Type the replacement text and press Enter.
+Step 3: nano will find the first occurrence of the text and ask if you want to replace it. Press:
+Y to replace the current occurrence.
+N to skip to the next occurrence.
+A to replace all occurrences without further prompts.
+Ctrl + C to cancel the replacement process.
+4. Saving and Exiting
+Ctrl + O: Saves the current file. You can change the filename if needed, otherwise, press Enter to save with the existing name.
+Ctrl + X: Exits nano. If you haven’t saved your changes, nano will prompt you to do so.
+5. Other Useful Commands
+Ctrl + G: Opens the help text, which provides a list of commands and their descriptions.
+Ctrl + C: Shows the current cursor position (line and column number).
+Ctrl + T: Opens the spell checker if it’s installed.
+Example Workflow
+Open a file: nano myfile.txt
+Edit the text: Type or delete as needed.
+Save changes: Ctrl + O (then press Enter to confirm).
+Exit: Ctrl + X
+-----------------------------------------------------------------------------------------
+cp
+mv
+untar
+history
+=======
+   1  cd /
+    2  ls
+    3  cd
+    4  pwd
+    5  cd /
+    6  pwd
+    7  cd
+    8  cd root
+    9  ls
+   10  cd /root
+   11  pwd
+   12  cd /etc
+   13  cd
+   14  ls
+   15  mkdir folder
+   16  ls
+   17  ll
+   18  touch file
+   19  ll
+   20  cat file
+   21  cat >file
+   22  cat file
+   23  vim file
+   24  cat file
+   25  vim file
+   26  nano file
+   27  cat file
+   28  mkdir dir
+   29  ls
+   30  mv file folder/
+   31  ls
+   32  cp dir folder
+   33  cp -f dir folder
+   34  touch abcd file2
+   35  ls
+   36  cat > abcd
+   37  cp abcd file2
+   38  cat file2
+   39  wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.93/bin/apache-tomcat-9.0.93.tar.gz
+   40  ls
+   41  ll
+   42  cd apache-tomcat-9.0.93.tar.gz
+   43  tar -xzf apache-tomcat-9.0.93.tar.gz
+   44  ls
+   45  cd apache-tomcat-9.0.93/
+   46  ls
+   47  cd
+   48  tar -xzf apache-tomcat-9.0.93.tar.gz
+   49  tar -xvzf apache-tomcat-9.0.93.tar.gz
+   50  ls
+   51  history
+
