@@ -1,0 +1,50 @@
+# Remove java 7
+sudo yum remove -y java
+
+# Install basic packages
+sudo yum install -y git
+
+# Download and install java 8
+wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz"
+tar -xzvf jdk-8u131-linux-x64.tar.gz
+rm -rf jdk-8u131-linux-x64.tar.gz
+
+# Configure JAVA_HOME
+sudo vim ~/.bashrc
+alias cls='clear'
+
+export JAVA_HOME=~/jdk1.8.0_131
+export JRE_HOME=~/jdk1.8.0_131/jre
+export PATH=$PATH:~/jdk1.8.0_131/bin:/~/jdk1.8.0_131/jre/bin
+source ~/.bashrc 
+java -version
+
+==========================================================================================================================
+Installation of Corretto 8 on Amazon Linux 2023
+To install Amazon Corretto 8 on Amazon Linux 2023, follow these steps:
+
+Update Your System:
+sudo dnf update
+Install Corretto 8: You can install Corretto 8 using the following command:
+sudo yum install java-1.8.0-amazon-corretto-devel
+Verify Your Installation: After installation, verify it by running:
+java -version
+You should see output similar to:
+openjdk version "1.8.0_422" OpenJDK Runtime Environment Corretto-8.422.05.1 (build 1.8.0_422-b05)
+Set Default Java Version (if necessary): If the version does not mention Corretto, set it as the default:
+sudo alternatives --config java
+Uninstalling Corretto 8: If you need to uninstall it later, use:
+sudo yum remove java-1.8.0-amazon-corretto-devel
+These steps will help you install and manage Corretto 8 on Amazon Linux 2023 effectively 124.
+
+==================================================================================================================
+Update package manager	sudo yum update -y
+Install JDK	sudo yum install java-17-openjdk-devel -y
+Download Maven	wget https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+Extract Maven	tar -xvzf apache-maven-3.9.9-bin.tar.gz
+Move Maven to /opt	sudo mv apache-maven-3.9.9 /opt/
+Edit profile for environment	nano ~/.bash_profile
+export M2_HOME=/opt/apache-maven-3.9.9
+export PATH=$M2_HOME/bin:$PATH
+Source profile	source ~/.bash_profile
+Verify installation	mvn -v

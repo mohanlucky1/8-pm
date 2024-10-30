@@ -1,0 +1,171 @@
+reference:
+
+https://www.digitalocean.com/community/tutorials/install-maven-linux-ubuntu
+
+
+maven installation:
+===================
+1.download java tar file:
+ # wget https://download.java.net/java/GA/jdk13.0.1/cec27d702aa74d5a8630c65ae61e4305/9/GPL/openjdk-13.0.1_linux-x64_bin.tar.gz
+2.extract tar file
+ # tar -xzf openjdk-13.0.1_linux-x64_bin.tar.gz
+3.move the file to opt directory.
+ # mv jdk-13.0.1 /opt/
+
+environment variables set-up
+
+# vim .profile
+
+JAVA_HOME='/opt/jdk-13.0.1'
+PATH="$JAVA_HOME/bin:$PATH"
+export PATH
+
+# source .profile
+
+# apt update -y
+# sudo apt install openjdk-11-jdk -y
+# java --version
+
+maven installation:
+
+1.download maven tar file
+  
+# wget https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+
+2.un tar the file
+# tar -xzf apache-maven-3.9.9-bin.tar.gz
+
+3.
+# mv apache-maven-3.9.9 /opt/
+
+environmental setup:
+# vim .profile
+M2_HOME='/opt/apache-maven-3.9.9'
+PATH="$M2_HOME/bin:$PATH"
+export PATH
+
+# mvn --version
+
+
+
+
+environmental setup:
+
+JAVA_HOME='/opt/jdk-13.0.1'
+PATH="$JAVA_HOME/bin:$PATH"
+export PATH
+M2_HOME='/opt/apache-maven-3.9.9'
+PATH="$M2_HOME/bin:$PATH"
+export PATH
+
+
+Jenkins installation:
+====================
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+    https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+    https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+
+
+ sudo apt-get update -y
+ sudo apt-get install fontconfig openjdk-17-jre
+ sudo apt-get install jenkins
+==================================================================================================================================
+# Installation of Corretto 8 on Amazon Linux 2023
+
+# To install Amazon Corretto 8 on Amazon Linux 2023, follow these steps:
+
+
+
+Install Corretto 8: You can install Corretto 8 using the following command:
+----------------------------------------------------------------------------
+sudo dnf install java-11-amazon-corretto-devel -y
+sudo dnf install java-17-amazon-corretto-devel -y
+
+sudo yum install java-1.8.0-amazon-corretto-devel
+
+java -version
+sudo alternatives --config java
+
+Uninstalling Corretto 8: If you need to uninstall it later, use:
+----------------------------------------------------------------
+sudo yum remove java-1.8.0-amazon-corretto-devel
+
+
+==================================================================================================================
+installation of maven on Linux 2023:
+------------------------------------
+sudo yum update -y
+
+Install Corretto 8: You can install Corretto 8 using the following command:
+----------------------------------------------------------------------------
+sudo yum install java-1.8.0-amazon-corretto-devel
+
+java -version
+sudo alternatives --config java
+
+Uninstalling Corretto 8: If you need to uninstall it later, use:
+----------------------------------------------------------------
+sudo yum remove java-1.8.0-amazon-corretto-devel
+
+wget https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+
+tar -xvzf apache-maven-3.9.9-bin.tar.gz
+
+sudo mv apache-maven-3.9.9 /opt/
+
+nano ~/.bash_profile
+
+export M2_HOME=/opt/apache-maven-3.9.9
+export PATH=$M2_HOME/bin:$PATH
+
+source .bash_profile
+
+mvn -v
+
+https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.96/bin/apache-tomcat-9.0.96.tar.gz
+
+git clone https://github.com/abburimohan/project-1-maven-jenkins-CICD-docker-eks-
+
+
+
+GitHub token:
+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
+==================================================================================================================================================
+tomcat installation:
+--------------------
+step-1:
+
+install java
+
+download tomcat tarfile:
+------------------------
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.95/bin/apache-tomcat-9.0.95.tar.gz
+
+tar -xzf apache-tomcat-9.0.95.tar
+
+now configure the username and password:
+----------------------------------------
+vim  apache-tomcat-9.0.95/conf/tomcat-users.xml
+
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<user username="tomcat" password="tomcat" roles="manager-gui,manager-script"/>
+
+find / -name context.xml ----------------->used find the path for context.xml file.
+vim apache-tomcat-9.0.95/webapps/manager/META-INF/context.xml
+
+remove the 20 and 21 line then save the file
+
+start tomcat server:
+-------------------
+sh apache-tomcat-9.0.95/bin/startup.sh
+
+
+
+
+
+
