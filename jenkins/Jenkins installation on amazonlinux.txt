@@ -1,0 +1,55 @@
+Jenkins installation on amazonlinux-2023
+==========================================
+sudo dnf install java-17-amazon-corretto -y
+
+ssudo wget -O /etc/yum.repos.d/jenkins.repo \https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+sudo dnf install jenkins -y
+
+sudo systemctl enable jenkins
+
+sudo systemctl start Jenkins
+
+
+
+
+reference :https://medium.com/@belek.bagishbekov/how-to-install-and-configure-jenkins-on-amazon-linux-2023-a8d7463a0404
+
+
+
+Jenkins installation on amazonlinux 2:
+=============================================
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+  sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+yum install java-11-amazon-corretto -y
+yum install jenkins -y
+yum install git -y
+wget https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+tar -xzf apache-maven-3.9.9-bin.tar.gz
+
+
+jenkins.war file installation
+=============================
+ubuntu:
+sudo apt update
+sudo apt install openjdk-11-jdk -y
+
+centos/RHEL:
+===========
+sudo yum update
+sudo yum install java-11-openjdk-devel -y
+
+AMAZONLINUX:
+===========
+sudo yum update
+sudo yum install java-11-amazon-corretto -y
+
+Download the latest jenkins.war file from the Jenkins official website.
+=======================================================================
+wget https://get.jenkins.io/war-stable/latest/jenkins.war
+
+ Start Jenkins:
+===============
+java -jar jenkins.war

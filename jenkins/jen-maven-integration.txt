@@ -1,0 +1,79 @@
+  sudo yum update -y
+ sudo yum -y install java-17*
+ sudo wget -O /etc/yum.repos.d/jenkins.repo     https://pkg.jenkins.io/redhat-stable/jenkins.repo
+ sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+ sudo yum upgrade
+ sudo yum -y install jenkins
+ sudo systemctl start jenkins
+ sudo systemctl enable jenkins
+ sudo systemctl status jenkins
+ cat /var/lib/jenkins/secrets/initialAdminPassword
+
+
+https://www.geeksforgeeks.org/configure-a-maven-project-in-jenkins/
+
+
+https://github.com/Sada-Siva-Reddy07/JavaWebCalculator---->simple-java-project
+
+integration with Jenkins and maven pipeline project:
+======================================================
+pipeline {
+    agent any
+
+    stages {
+        stage('git clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Sada-Siva-Reddy07/JavaWebCalculator'
+            }
+        }
+         stage('Build') {
+         steps {
+        withEnv(['PATH+MAVEN=/opt/maven/bin']) {
+          sh 'mvn clean install'
+        }
+      }
+    }
+}
+}
+
+======================================================================================
+  integration with Jenkins and maven and tomcat pipeline project:
+-------------------------------------------------------------------------------
+declarative script:
+-------------------
+pipeline {
+    agent any
+
+    stages {
+        stage('git clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Sada-Siva-Reddy07/JavaWebCalculator'
+            }
+        }
+         stage('Build') {
+         steps {
+        withEnv(['PATH+MAVEN=/opt/apache-maven-3.9.9/bin']) {
+          sh 'mvn clean install'
+        }
+      }
+    }
+    stage('war-deploy'){
+        steps{
+            deploy adapters: [tomcat9(credentialsId: 'tomcatcred', path: '', url: 'http://3.110.83.87:8081/')], contextPath: null, war: '**/*.war'
+        }
+    }
+    }
+}
+
+scripted pipeline syntax:
+-------------------------
+node {
+stage('stage-1'){
+<command>
+}
+}
+=========================================================================================================
+https://gist.github.com/Manas-kashyap/678df1073f7dbd335d0a5685c3c4457e   ---->Jenkins user management.
+
+
+
