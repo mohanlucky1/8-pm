@@ -1,0 +1,95 @@
+sudo dnf update -y
+sudo dnf install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl status docker
+docker --version
+docker version
+sudo usermod -aG docker ec2-user
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+mkdir ~/docker-compose-test
+cd ~/docker-compose-test
+cat <<EOF > docker-compose.yml
+version: '3'
+services:
+  web:
+    image: nginx
+    ports:
+      - "80:80"
+EOF
+
+docker-compose up -d
+docker-compose ps
+
+====================================================================================
+vim Dockerfile
+
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+COPY index.html /var/www/html/
+CMD ["/usr/sbin/apachectl","-D","FOREGROUND"]
+
+docker
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+
+
+
+git clone https://github.com/mohanlucky2/index.html.git
+cd index.html
+mv index.html /root
+
+ 
+ docker build -t registr .
+ docker build -t dth .
+ docker build -t train .
+ docker build -t recharge .
+ docker images
+ vim docker-compose.yml
+ docker-compose up -d
+ docker login
+ docker tag register ramu478/register
+ docker tag register ramu478/register:latest
+ docker images
+ docker tag registr ramu478/registr
+ docker push ramu478/registr
+ docker tag dth ramu478/dth
+ docker push ramu478/dth
+ docker tag recharge ramu478/recharge
+ docker push ramu478/
+ docker tag train ramu478/train
+ docker push ramu478/train
+ docker-compose up -d
+ vim docker-compose.yml
+ docker-compose up -d
+ docker-compose ps
+
+docker network commands:
+=======================
+Types of Docker Networks
+1.Bridge Network (default):
+Use Case: When you have multiple containers on the same host that need to communicate with each other but should be isolated from other containers.
+
+
+docker network create --driver bridge my_bridge
+docker run --network=my_bridge my_container
+2.Host Network:
+Use Case: Useful when performance is critical, and you want to avoid network translation overhead or when you need to bind services on the same port as the host machine.
+
+docker run --network host my_container
+
+None Network:
+
+Purpose: Disables networking for a container. The container is completely isolated from the network.
+
+Use Case: Ideal for containers that don’t need network access, e.g., when you're testing applications that don’t require network communication.
+
+
+
+

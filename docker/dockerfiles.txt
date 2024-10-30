@@ -1,0 +1,81 @@
+dockerfile file for Jenkins:
+============================
+# Use Amazon Linux as the base image
+
+FROM amazonlinux:latest
+
+# Update and install necessary packages
+RUN yum update -y && \
+    yum install -y java-17-amazon-corretto wget
+
+# Set the working directory
+WORKDIR /opt
+
+# Download Jenkins WAR file
+RUN wget https://updates.jenkins.io/download/war/2.481/jenkins.war
+
+# Expose port 8080 for Jenkins
+EXPOSE 8080
+
+# Define the default command to run Jenkins
+CMD ["java", "-jar", "/opt/jenkins.war"]
+
+
+commands:
+=========
+docker build -t jenkins-image .
+
+docker run -d -p 8080:8080 --name jenkins-container jenkins-image
+
+docker ps
+================================================================================================================
+dockerfile for tomcat:
+======================
+# Use Ubuntu as the base image
+FROM ubuntu:latest
+
+# Install necessary packages: Java (required for Tomcat) and wget to download Tomcat
+
+RUN apt-get update -y && \
+    apt-get install -y openjdk-17-jdk wget
+
+# Set the working directory for Tomcat installation
+
+WORKDIR /usr/local
+
+
+# Download Apache Tomcat (replace version as needed)
+
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.96/bin/apache-tomcat-9.0.96.tar.gz
+
+# Extract Tomcat and remove the tar.gz file
+
+RUN tar xzf apache-tomcat-9.0.96.tar.gz && \
+    rm apache-tomcat-9.0.96.tar.gz
+
+# Rename the extracted folder for ease of use
+
+COPY tomcat-users.xml apache-tomcat-9.0.96/conf/tomcat-users.xml
+
+COPY context.xml apache-tomcat-9.0.96/webapps/manager/META-INF/context.xml
+
+RUN mv apache-tomcat-9.0.96 tomcat
+
+# Expose the port on which Tomcat listens (default 8080)
+
+EXPOSE 8080
+
+# Start Tomcat
+
+CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
+---------------------------------------------------------------------------------------------------------
+docker build -t tomcat-ubuntu-image .
+
+docker run -d -p 8080:8080 --name tomcat-ubuntu-container tomcat-ubuntu-image
+
+docker ps
+======================================================================================
+
+
+
+

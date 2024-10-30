@@ -1,0 +1,690 @@
+docker: containerazation platform.we can utilize the memory in efficient way
+
+container: pack the application along wirh its dependencies
+virtualization: to efficint awy of using physical system
+
+monolithic service: N no.of services utilize single server and single data base
+
+ microservice: N no.of services working on N no.of servers.i.e each and every service has individul server along with database
+
+hypervier :it can introduce the virtulization on physical system
+
+installation of docker:
+
+yum install docker -y
+service docker start
+service docker status
+if you want to create a container it requires image.
+Docker Containers:
+Docker containers are the lightweight alternatives of the virtual machine. It allows developers to package up the
+application with all its libraries and dependencies, and ship it as a single package. 
+
+basic docker coomands:
+======================
+docker pull ubuntu:  dowload the docker image
+
+crate container: 
+
+#docker run -it --name cont1 ubuntu
+
+this command can create the docker container at the same time go inside the docker container
+
+ctrl p q--->comeout side from the container with out exited mode
+
+ctrl + d--->comeout side from the container and contaner goes to exited mode
+
+#docker run -itd --name cont2 ubuntu 
+ this command is used create the container and the container is run in detached mode
+
+#docker images    --->this command will show the list of containers
+#docker ps        --->to see the list of running contaners
+#docker ps -a     ---->to see the list of running and stopped containers
+#docker attach contanerid --->login to the container
+#docker exec -it contanerid /bin/bash--->login to the container
+#docker run -it --name cont -p 80:80 ubuntu --->create the containerand assign the port numner
+#docker stop cont_name
+#docker start cont_name
+#docker kill cont_name
+#docker pause con_name
+#docker container ls
+#docker inspect cont_name-->this will show the detailed discription of container
+
+docker is a os level vituvalization
+
+docker pull ubuntu
+
+docker run -itd --name cont ubuntu
+
+apt update -y
+apt install apache2 -y
+apt install mysql-server -y
+apt install default-jdk default-jre -y
+touch file{1..5}
+
+dockerfile components:
+ dockerfile has list of commands to create the docker image
+COMPONENTS:
+
+FROM		: used to base image
+RUN		    : used to run linux commands (image creation)
+CMD		    : used to run linux commands (container creation)
+ENTRYPOINT	: high priority than cmd
+COPY		: to copy local files to conatiner
+ADD		    : to copy internet files to conatiner
+WORKDIR		: to open req directory
+LABEL		: to add labels for docker file
+ENV		    : to set env variables (inside container)
+ARGS		: to pass env variables (outside containers)
+EXPOSE		: to give port number
+
+
+build the docker file------>docker image--->run the docker image---->docker contaner
+
+vim Dockerfile
+
+FROM amazonlinux
+RUN yum update -y
+RUN yum install httpd -y
+RUN touch abc.txt
+RUN mkdir ram
+WORKDIR ram
+
+docker build -t image1 .
+docker run -it --name cont1 image1
+ctrl p q
+docker ps -a
+
+vim Dockerfile
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+COPY index.html /var/www/html
+ADD http://dlcdn.apache.org/tomcat/tomcat-9/v9.0.80/bin/apache-tomcat-9.0.80.tar.gz /tmp
+
+docker build -t image2 .
+docker run -itd --name cont2 image2
+
+ex:3
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+COPY index.html /var/www/html
+ADD http://dlcdn.apache.org/tomcat/tomcat-9/v9.0.80/bin/apache-tomcat-9.0.80.tar.gz /tmp
+WORKDIR /tmp
+LABEL auther ram
+CMD apt install maven -y
+
+ex:4
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+RUN apt install mysql-server -y
+RUN apt install default-jre default-jdk -y
+CMD apt install maven -y
+
+ex:5
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+ADD http://dlcdn.apache.org/tomcat/tomcat-9/v9.0.80/bin/apache-tomcat-9.0.80.tar.gz /tmp
+WORKDIR /tmp
+VOLUME /myvol
+LABEL auther ram
+COPY index.html /var/www/html
+ENV client swiggy
+ENV container appcontainer
+EXPOSE 8080
+
+ex:6
+
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+COPY * /var/www/html/
+CMD ["/usr/sbin/apachectl","-D","FOREGROUND"]
+
+git clone https://github.com/mohanlucky2/bookmyshow.git
+
+mv bookmyshow/* .
+
+history:
+ mkdir docker1
+ cd docker1
+ ls
+ vim Dockerfile
+ docker build -t image1 .
+ docker images
+ docker run -it --name image1
+ docker run -it --name cont3 image1
+ docker ps
+ vim Dockerfile
+ docker run -it --name image1
+ docker build -t image1 .
+ vim Dockerfile
+ docker build -t image1 .
+ vim Dockerfiles
+ cd ..
+ ls
+ cp index.html docker1/
+ cd docker1
+  ls
+ docker build -t image1 .
+ docker images
+ cat Dockerfile
+ docker run -it --name cont5 image1
+  vim Dockerfile
+ docker rm -f $(docker ps -aq)
+ docker rmi -f $(docker images -aq)
+ docker images
+ docker ps -a
+ docker build -t apache .
+ docker images
+ docker run -itd --name loginform -p 80:80 apache
+ docker ps
+
+ex:6
+
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+COPY * /var/www/html/
+CMD ["/usr/sbin/apachectl","-D","FOREGROUND"]
+
+git clone https://github.com/mohanlucky2/bookmyshow.git
+
+mv bookmyshow/* .
+
+docker volumes:
+--------------
+docker volumes are used store data inside the container
+
+docker volume is a simple directory inside the container
+
+containers uses host resources like cpu,ram and rom
+
+single volume can be shared to multiple containers 
+
+reation of the container is different ways
+method-1:
+
+FROM ubuntu
+VOLUME /myvol
+
+docker build -t image1 .
+
+docker run -it --name cont1 image1
+
+cd myvol/
+touch abc.txt
+
+cat>abc.txt
+ctrl p q
+
+docker run -it --name cont2 --volumes-from cont1 --privileged=true ubuntu
+
+method-2:
+
+docker run -it --name cont3 -v myvol1 ubuntu
+
+cd myvol1/
+
+touch file{1..5}
+
+docker run -it --name cont4 --volumes-from cont3 --privileged=true ubuntu
+
+method-3:volume mounting:
+
+docker volume ls ---->list of volumes
+
+docker volume create volume-1 --->to create volume
+docker volume inspectvolume name-->to get the docker volume information
+
+cd /var/lib/docker/volumes/myvol1/_data
+
+touch file{1..5}
+docker run -it --name cont5 --mount source=volume-1,destination=/volume-1 ubuntu
+docker volume rm volumename
+docker volume prune volumename: to delete unused containers
+
+docker system commands:
+thes are used to konow the complete information of docker container
+
+docker system df -v
+docker inspect cont3 grep volume -image
+docker system prune:to remove unused objects of docker
+
+docker memory management:
+
+containes uses host resources .by default we don't have any limits for containers
+
+we need to set it
+
+docker run -itd --name cont6 --memory="200mb" --cpus="0.2" ubuntu
+
+docker inspect cont6
+
+docker stats cont6
+
+[ec2-user@ip-172-31-32-61 ~]$sudo usermod -aG docker ec2-user
+[ec2-user@ip-172-31-32-61 ~]$ newgrp docker
+[ec2-user@ip-172-31-32-61 ~]$dcker pull nginx
+
+
+
+
+
+1  yum update -y
+    2  yum install docker git -y
+    3  git clone https://github.com/mohanlucky2/bookmyshow.git
+    4  ls
+    5  cd bookmyshow/
+    6  ls
+    7  vim Dockerfile
+    8  ls
+    9  docker build -t bookmyshow .
+   10  service docker start
+   11  service docker sttus
+   12  service docker status
+   13  docker build -t bookmyshow .
+   14  docker images
+   15  docker run -itd --name cont1 -p 81:80 bookmyshow
+   16  docker ps
+   17  cd ..
+   18  mkdir docker
+   19  cd docker/
+   20  vim Dockerfile
+   21  docker build -t volumeimage .
+   22  docker images
+   23  docker run -it --name cont2 volumeimage
+   24  docker ps
+   25  docker run -it --name cont3 --volumes-from cont2 --privileged=true volumeimage
+   26  docker images
+   27  docker run -it --name cont4 -v myvolume ubuntu
+   28  docker run -it --name cont5 --volumes-from cont4 --privileged=true volumeimage
+   29  docker volume ls
+   30  docker ps -a
+   31  docker volume create myvol
+   32  docker volume ls
+   33  docker run -it --name cont6 --mount source=myvol destination=/myvol ubuntu
+   34  docker run -it --name cont6 --mount source=myvol,destination=/myvol ubuntu
+   35  docker volume ls
+   36  docker ps -a
+   37  docker system df -v
+   38  docker inspect cont1
+   39  docker inspect volume1
+   40  docker inspect myvol
+   41  docker volume ls
+   42  docker run -itd --name cont7 --memory="200mb" --cpus= "0.2" ubuntu
+   43  docker run -itd --name cont7 --memory="200mb" --cpus="0.2" ubuntu
+   44  docker stats cont7
+   45  docker images
+   46  docker ps
+   47  docker volume ls
+   48  docker rm -f $(docker ps -aq)
+   49  docker rmi -f $(docker images -aq)
+   50  docker images
+   51  docker ps -a
+   52  docker volume ls
+   53  docker volume rm myvol
+   54  docker volume prune
+   55  docker volume ls
+docker compose:
+it is a tool which is used to manage multi-container aplications
+docker compose is tool to create multiple containers at single time.
+we need to write a docker-compose for this operation,
+the docker-compose file is in yaml formate
+in this file we have to mention images,ports,volumes
+
+installation of docker compose:
+yum install docker -y
+service docker start
+yum install docker-compose -y
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ls /usr/local/bin/
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose version
+
+vim Dockerfile
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+COPY index.html /var/www/html/
+CMD ["/usr/sbin/apachectl","-D","FOREGROUND"]
+
+git clone https://github.com/mohanlucky2/index.html.git
+cd index.html
+mv index.html /root
+
+docker build -t registr:v1 .
+docker build -t recharge:v1 .
+docker build -t dth:v1 .
+docker build -t train:v1 .
+
+
+vim docker-compose.yml
+
+version: '3'
+services:
+  register:
+    image: register:v1
+    ports:
+      - "81:80"
+  recharge:
+    image: recharge:v1
+    ports:
+      - "82:80"
+  dth:
+    image: dth:v1
+    ports:
+      - "83:80"
+  train:
+    image: train:v1
+    ports:
+      - "84:80"
+docker-compose up -d---->to create and start containers
+docker-compose down--->to stop and delete 
+docker-compose stop--->to stop the containers
+docker-compose kill--->to kill the containers
+docker-compose start---> to start the containers
+docker-compose pause--->to pause the containers
+docker-compose unpause--->to unpause the containers
+docker-compose ps--->to show the containers created with compose file
+docker-compose logs--->to show compose logs
+docker-compose image--->to show images used for compose
+
+docker-compose file supported names:
+docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml
+advantages:
+
+we can create multiplecontainers at a time,reduce the mannual work
+we can reuse the docker-compose file
+
+
+
+
+
+vim docker.sh
+    2  sh docker.sh
+    3  service docker status
+    4  yum install docker -y
+    5  service docker start
+    6  docker-compose --version
+    7  yum install git -y
+    8  ls
+    9  git clone https://github.com/mohanlucky2/index.html.git
+   10  ls
+   11  mv index.html/ index
+   12  cd index/
+   13  ls
+   14  rm index.html.txt
+   15  ls
+   16  vim Dockerfile
+   17  cat index.html
+   18  vim index.html
+   19  docker build -t train:v1 .
+   20  docker images
+   21  vim index.html
+   22  docker build -t movie:v1 .
+   23  docker images
+   24  vim index.html
+   25  docker build -t dth:v1 .
+   26  docker images
+   27  vim index.html
+   28  docker build -t recharge:v1 .
+   29  docker images
+   30  docker ps -a
+   31  docker images
+   32  vim docker-compose.yml
+   33  docker-compose up -d
+   34  docker-compose ps
+   35  docker ps
+   36  docker-compose image
+   37  docker-compose images
+   38  docker images
+   39  docker login
+   40  docker tag train:v1 ramu478/train:v1
+   41  docker push ramu478/train:v1
+   42  docker tag movie:v1 ramu478/movie:v1
+   43  docker push ramu478/movie:v1
+   44  docker tag dth:v1 ramu478/dth:v1
+   45  docker push ramu478/dth:v1
+   46  docker tag recharge:v1 ramu478/recharge:v1
+   47  docker push ramu478/recharge:v1
+   48  docker images
+   49  docker pull ramu478/recharge
+   50  docker pull ramu478/recharge:latest
+   51  docker images
+
+docker swarm:
+prerequasites
+3 servers(1-master,2-workers),give all traffic enable
+stop-1:
+on master
+hostname master
+bash
+on worker1
+hostname worker1
+bash
+on worker2
+hostname worker2
+bash
+step-2:
+on all nodes
+yum install docker -y
+service docker start
+
+on master only
+docker swarm init
+
+copy the token and enter it in slaves
+goto master and enter the following command
+docker node ls
+
+services:
+to copy the container from master to worker node we need to create service
+service is a way of exposing application
+
+we can manage multiple containers with the help of services
+
+docker service create --name train --replicas 6 -p 81:80 ramu478/train:v1
+docker service ls
+docker service scale train=10
+docker service ps train 
+docker service scale train=4
+docker service inspect train
+docker service rollback train
+docker service logs train
+
+to detatch node from cluster:
+--------------------------------
+docker swarm leave
+to remove node completely:
+--------------------------
+docker node rm nodeid--->on master
+
+to retrive the join token:
+--------------------------
+docker swarm join-token manage
+
+1  yum update -y
+    2  yum install docker -y
+    3  service docker start
+    4  docker swarm init
+    5  docker node ls
+    6  yum install git -y
+    7  git clone https://github.com/mohanlucky2/index.html.git
+    8  cd index.html/
+    9  ls
+   10  vim Dockerfile
+   11  docker build -t apache .
+   12  docker images
+   13  docker run -itd --name c1 -p 81:80 apache
+   14  docker ps
+   15  docker images
+   16  docker ps -a
+   17  docker node ls
+   18  docker service create --name registerform --replicas 3 apache
+   19  docker service ls
+   20  docker ps
+   21  docker service ls
+   22  docker service rm registerform
+   23  docker service ls
+   24  docker service create --name registerform --replicas 3 -p 82:80 apache
+   25  docker service ls
+   26  docker ps
+   27  docker service scale registerform=10
+   28  docker service ls
+   29  docker ps
+   30  docker service rollback registerform
+   31  docker service ls
+   32  docker ps
+   33  docker service ps registerform
+   34  docker ps
+   35  docker service ps registerform
+   36  docker service inspect registerform
+   37  docker service logs registerform
+   38  docker node ;ls
+   39  docker node ls
+   40  docker node rm bckaga3snsa25jwu9bmk2mfze
+   41  docker node ls
+   42  docker images
+
+docker networks:
+----------------
+Docker networking is a fundamental aspect of working with Docker containers. 
+It allows containers to communicate with each other and with the outside world. 
+There are several networking options available in Docker, and understanding 
+them is crucial for effectively deploying and managing containerized applications.
+
+Here are some key concepts and options related to Docker networking:
+
+Bridge Network: This is the default network that Docker sets up when you install it.
+ Containers connected to a bridge network can communicate with each other without 
+ requiring any additional configuration. By default, containers on a bridge network are 
+ isolated from the external network unless you explicitly expose ports.
+
+Host Network: When a container uses the host network mode, it shares the network 
+namespace with the Docker host, meaning it uses the host's network stack. This allows
+the container to directly access the network interfaces of the host system, essentially
+bypassing Docker's network isolation.
+
+Overlay Network: This is used in multi-host setups where you have multiple Docker hosts 
+running on different machines. It allows containers on different hosts to communicate with
+ each other as if they were on the same host. This is especially useful for orchestrators 
+ like Docker Swarm or Kubernetes.
+
+Macvlan Network: This allows you to assign a MAC address to a container, making it appear
+ as a physical device on your network. This can be useful when you want your container to
+ have its own IP address and be directly accessible from the external network.
+
+docker network:
+-->networking is about communication among process
+-->docker networking enables a user to link a docker container to as many networks as they require
+-->docker network is used to provide complete isolation for docker container
+advantages of docker networking:
+===============================
+1.conatiners share single operating system and maintains containers in isolated manner
+2.it helps in the fast delivery of software 
+3.it helps in application portability
+
+when docker is installed in a machine by default 3 docker networks will be configured
+     1. none
+	 2. host
+	 3.bridge
+note:one container we can attach to multiple networks
+-->when container is attached to multiple networks then those containers can comminicate 
+--->docker providing networking to containers using network drivers
+
+docker network drivers:
+=======================
+1.none
+2.host
+3.bridge
+4.overlay driver 
+5.macvlan driver
+ 
+ bridge:this is default drive created on the docker host machine
+ 
+ note:bride network drivers are very useful when application in stand alone container
+ 
+ we can see more details about this driver we can use following command
+
+docker network inspect bridge
+
+2.host drivers:
+--> it is  useful when application in stand alone container
+-->the container will not get any IP address when we enable host driver 
+-->in this cae we no need to map container port to host machine port
+ this is useful when we are running our containers with large no.of ports
+here no need port mapping
+3.none drivers:
+===============
+in trhis type of network the container will have no access to network
+
+ooverlay driver:
+===============
+-->we will use docker swarm to  orchestarate our docker containers 
+-->overlay driver will be used when we have docker swarm cluster 
+macvlan:
+========
+--->it will assign a MAC address to a container
+-->MAC address will make our device as physical device
+-->using this MAC address Docker engine routes the traffic to a particular routes
+
+docker network ls
+docker pull nginx
+running docker container with default network 
+docker run -itd --name c1 -p 80:80 nginx
+docker inspect nginx 
+#creating our own bridge network 
+docker network create --driver bridge mynetwork
+docker network ls
+note: if we don'yt specify driver then by defaultit will take
+bridge driver 
+
+run the docker container using custom network which we have created 
+
+docker run -itd --name c1 --network mynetwork -p 80:80 nginx
+docker network ls
+#to check the containers attached to my-network  
+ docker network inspect mynetwork
+ 
+i wnat to create two containers in my network,i want to check these two are communicate each other or not
+
+docker run -itd --name c1 --network mynetwork -p 8080:80 nginx
+
+docker run -itd --name c2 --network mynetwork -p 9090:80 nginx
+
+docker ps 
+
+#ip address of container we can get by using the following command
+
+docker inspect -f '{{range.Networksetting.Networks}}{{.IPAddress}}{{end}}' containerid	  
+	  
+now login to the one container withe help of follwing
+
+docker exec -it c1 /bin/bash
+
+apt-get update -y 
+apt install iputils-ping 
+ping ipaddress of c2  
+
+we can do the same procedure on c2 also
+
+running containers using host network:
+
+docker run --name c3 --network host -d nginx
+copy the index.html from ec2 instance to apache container we ca use the following command
+docker cp index.html c5:/var/www/html
+
+ COMMANDS:
+docker network create paytm
+docker network ls
+docker network inspect paytm
+docker network connect paytm cont1
+docker network connect paytm cont2
+docker exec cont1 sudo apt update -y
+docker exec cont1 sudo apt install iputils-ping -y
+docker exec cont1 ping ip-cont2
+   

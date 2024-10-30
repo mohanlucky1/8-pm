@@ -1,0 +1,57 @@
+docker swarm:
+--------------
+prerequisites:
+3 servers(1-master,2-workers),give all traffic enable
+stop-1:
+on master
+hostname master
+bash
+on worker1
+hostname worker1
+bash
+on worker2
+hostname worker2
+bash
+step-2:
+on all nodes
+------------------------------------------
+yum install docker -y
+service docker start
+service docker enable
+-----------------------------------------------------
+on master only
+docker swarm init
+copy the token and enter it in slaves
+goto master and enter the following command
+docker node ls
+-----------------------------------------------
+
+services:
+to copy the container from master to worker node we need to create service
+service is a way of exposing application
+we can manage multiple containers with the help of services
+----------------------------------------------------------------------------------------
+docker service create --name train --replicas 6 -p 81:80 ramu478/train:v1
+docker service ls
+docker service scale train=10
+docker service ps train 
+docker service scale train=4
+docker service inspect train
+docker service rollback train
+docker service logs train
+--------------------------------------
+to detach node from cluster:
+docker swarm leave
+----------------------------------
+to remove node completely:
+docker node rm node-id--->on master
+-----------------------------------------
+to retrieve the join token:
+docker swarm join-token manager
+----------------------------------------------------
+difference between docker swarm and k8s: 
+=======================================
+Kubernetes (K8s) and Docker Swarm are both container orchestration tools, but they differ in complexity and features:
+•	Kubernetes is more complex, offering advanced features like auto-scaling, load balancing, and high availability, with a strong ecosystem. It’s ideal for large-scale, production-grade deployments.
+•	Docker Swarm is simpler, integrated with Docker, and easier to set up, making it suitable for smaller deployments with basic orchestration needs.
+In short: Kubernetes is feature-rich and powerful but complex, while Docker Swarm is simpler and quicker to deploy but limited in functionality.
