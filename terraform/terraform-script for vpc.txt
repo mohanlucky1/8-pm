@@ -1,0 +1,74 @@
+provider "aws" {
+  region = "ap-south-1"
+}
+resource "aws_vpc" "one" {
+cidr_block="10.0.0.0/16"
+  tags = {
+    Name = "vpc"
+  }
+}
+resource "aws_subnet" "two" {
+vpc_id=aws_vpc.one.id
+cidr_block="10.0.0.0/24"
+map_public_ip_on_launch = true
+  tags = {
+    Name = "publicsubnet"
+  }
+}
+resource "aws_subnet" "three" {
+vpc_id=aws_vpc.one.id
+cidr_block="10.0.1.0/24"
+  tags = {
+    Name = "private_subnet"
+  }
+}
+resource "aws_internet_gateway""igw"{
+vpc_id = aws_vpc.one.id
+tags={
+Name="my-igw"
+}
+}
+resource "aws_route_table""four"{
+vpc_id=aws_vpc.one.id
+route{
+cidr_block="0.0.0.0/0"
+gateway_id=aws_internet_gateway.igw.id
+}
+tags={
+Name="main_route_table"
+}
+}
+resource "aws_route_table_association" "subnet1_association" {
+subnet_id=aws_subnet.two.id
+route_table_id=aws_route_table.four.id
+}
+resource "aws_route_table_association" "subnet2_association" {
+subnet_id=aws_subnet.three.id
+route_table_id=aws_route_table.four.id
+}
+output "vpc_id" {
+value=aws_vpc.one.id
+}
+output "public_subnet_id" {
+  value       = aws_subnet.two.id
+  description = "The ID of the subnet."
+}
+output "private_subnet_id" {
+  value       = aws_subnet.three.id
+  description = "The ID of the private subnet."
+}
+resource "aws_instance" "example_instance" {
+  ami           = "ami-04a37924ffe27da53"  # Replace with a valid AMI ID for your region
+  instance_type = "t2.micro"
+
+  # Attach to the existing subnet and security group
+  subnet_id              = aws_subnet.two.id
+
+
+  # Assign a public IP if needed (usually for public subnet)
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "example-instance"
+  }
+}

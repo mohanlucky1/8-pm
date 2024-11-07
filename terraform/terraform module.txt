@@ -1,0 +1,72 @@
+terraform module:
+=================
+In Terraform, a module is a container for multiple resources that are used together, allowing you to organize and reuse configurations effectively. Modules are essentially directories containing .tf files that define a set of infrastructure resources. 
+
+.
+├── main.tf
+├── my-ec2-instance
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── terraform.tfstate
+│   ├── terraform.tfstate.backup
+│   └── variables.tf
+├── terraform.tfstate
+└── terraform.tfstate.backup
+
+vim main.tf
+
+provider "aws" {
+region="ap-south-1"
+}
+resource  "aws_instance""one" {
+ami= var.ami_id
+instance_type=var.instance_type
+count=var.instance_count
+tags={
+Name=var.instance_name
+}
+}
+
+vim variables.tf
+variable "ami_id"{
+description ="*"
+type =string
+default ="ami-04a37924ffe27da53"
+}
+variable "instance_type"{
+description ="*"
+type=string
+default="t2.micro"
+}
+variable "instance_count"{
+description ="*"
+type=number
+default=1
+}
+variable "instance_name"{
+description ="*"
+type=string
+default="my-ec2"
+}
+================================================
+tfvars:
+-------
+
+provider "aws" {
+region= var.region
+}
+resource "aws_instance" "one"{
+ami="ami-04a37924ffe27da53"
+instance_type=var.instance_type
+}
+
+
+vim outpus.tf
+
+output "instance_id"{
+description="ID of my instance"
+value="aws_instance.one.id"
+}
+
+
+

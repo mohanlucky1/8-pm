@@ -1,0 +1,79 @@
+provider "aws"{
+region="ap-south-1"
+}
+resource "aws_vpc""one"{
+cidr_block="10.0.0.0/16"
+tags={
+Name="myvpc"
+}
+}
+resource "aws_subnet""two"{
+cidr_block="10.0.0.0/24"
+vpc_id=aws_vpc.one.id
+tags={
+Name="public-subnet"
+}
+}
+resource "aws_subnet""three"{
+cidr_block="10.0.1.0/24"
+vpc_id=aws_vpc.one.id
+tags={
+Name="private-subnet"
+}
+}
+# Elastic IP for the NAT Gateway
+#resource "aws_eip" "nat_eip" {
+# vpc = true
+#}
+# Elastic IP for the NAT Gateway
+resource "aws_eip" "nat_eip" {
+  domain = "vpc"  # Updated to use the recommended domain attribute
+}
+
+# NAT Gateway in the Public Subnet
+resource "aws_nat_gateway" "nat_gateway" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.two.id
+
+  tags = {
+    Name = "nat-gateway"
+  }
+}
+resource "aws_internet_gateway""four"{
+vpc_id=aws_vpc.one.id
+tags={
+Name="my-igw"
+}
+}
+resource "aws_route_table""five"{
+vpc_id=aws_vpc.one.id
+route{
+cidr_block="0.0.0.0/0"
+gateway_id=aws_internet_gateway.four.id
+}
+tags={
+Name="public_route_table"
+}
+}
+# Route Table for Private Subnet (using NAT Gateway)
+resource "aws_route_table" "six" {
+  vpc_id = aws_vpc.one.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gateway.id
+  }
+
+  tags = {
+    Name = "private-route-table"
+  }
+}
+
+resource "aws_route_table_association" "publicsubnet_association"{
+subnet_id=aws_subnet.two.id
+route_table_id=aws_route_table.five.id
+}
+resource "aws_route_table_association" "privatesubnet_association"{
+subnet_id=aws_subnet.three.id
+route_table_id=aws_route_table.six.id
+}
